@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cors({ origin: true }));
 
 const DATABASE_URL = process.env.DATABASE_URL;
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 app.use('/user', userRoutes);
 app.use('/donors', donorsRoutes);
