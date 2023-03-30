@@ -27,7 +27,7 @@ mongoose
   .connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>
     server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`MongoDB Connected ${PORT}`);
     })
   )
   .catch((error) => console.log(error.message));
@@ -40,18 +40,6 @@ app.use("/donation", donationRoutes);
 app.use("/request-blood", requestBloodRoutes);
 app.use("/consult", consultRoutes);
 app.use("/doctors", doctorRoutes);
-
-// const io = new Server(server, {
-//   cors: {
-//       origin: "*",
-//       methods: ["GET", "POST"],
-//     },
-// });
-
-// io.on("connection", (socket) => {
-//   handlePatients(io, socket)
-//   handleVideoChat(io, socket)
-// })
 
 app.get("/", (req, res) => {
   // console.log("req", req);
