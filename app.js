@@ -50,3 +50,12 @@ mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true
     .catch(error => console.log(error.message));
 
 mongoose.set('useFindAndModify', false);
+
+
+app.get("/", (req, res) => {
+  console.log("req", req);
+  res.header("Access-Control-Allow-Origin", "https://www.blood-donaltion-shabit");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+
+  res.send("Hello Client...!");
+});
