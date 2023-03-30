@@ -11,16 +11,31 @@ import donationRoutes from './routes/donations.js';
 import donorsRoutes from './routes/donors.js';
 import requestBloodRoutes from './routes/requestBlood.js';
 import userRoutes from './routes/users.js';
-
+const DATABASE_URL = process.env.DATABASE_URL;
+const PORT = process.env.PORT || 5050;
 const app = express();
 const server = http.createServer(app);
 
 dotenv.config();
 app.use(express.json());
-app.use(cors({ origin: true }));
+const corsOptions = {
+  origin: [
+    "https://rightfuture.in",
+    "http://localhost:3000",
+  ],
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
+app.use(express.json());
 
-const DATABASE_URL = process.env.DATABASE_URL;
-const PORT = process.env.PORT || 5050;
+
+mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    }))
+    .catch(error => console.log(error.message));
+
+mongoose.set('useFindAndModify', false);
 
 app.use('/user', userRoutes);
 app.use('/donors', donorsRoutes);
@@ -43,19 +58,11 @@ io.on("connection", (socket) => {
 })
 
 
-mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => server.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    }))
-    .catch(error => console.log(error.message));
-
-mongoose.set('useFindAndModify', false);
 
 
 app.get("/", (req, res) => {
   // console.log("req", req);
   res.header("Access-Control-Allow-Origin", "https://www.blood-donaltion-shabit");
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-
   res.send("Hello Client blood donation project!");
 });
